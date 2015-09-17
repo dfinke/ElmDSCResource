@@ -1,0 +1,211 @@
+Elm.Bingo = Elm.Bingo || {};
+Elm.Bingo.make = function (_elm) {
+   "use strict";
+   _elm.Bingo = _elm.Bingo || {};
+   if (_elm.Bingo.values)
+   return _elm.Bingo.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Bingo",
+   $Basics = Elm.Basics.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $StartApp = Elm.StartApp.make(_elm),
+   $String = Elm.String.make(_elm);
+   var totalItem = function (total) {
+      return A2($Html.li,
+      _L.fromArray([$Html$Attributes.$class("total")]),
+      _L.fromArray([A2($Html.span,
+                   _L.fromArray([$Html$Attributes.$class("label")]),
+                   _L.fromArray([$Html.text("Total")]))
+                   ,A2($Html.span,
+                   _L.fromArray([$Html$Attributes.$class("points")]),
+                   _L.fromArray([$Html.text($Basics.toString(total))]))]));
+   };
+   var totalPoints = function (entries) {
+      return function () {
+         var spokenEntries = A2($List.filter,
+         function (_) {
+            return _.wasSpoken;
+         },
+         entries);
+         return $List.sum(A2($List.map,
+         function (_) {
+            return _.points;
+         },
+         spokenEntries));
+      }();
+   };
+   var pageFooter = A2($Html.footer,
+   _L.fromArray([]),
+   _L.fromArray([A2($Html.a,
+   _L.fromArray([$Html$Attributes.href("http://dougfinke.com/blog")]),
+   _L.fromArray([$Html.text("Development in a Blink")]))]));
+   var title = F2(function (message,
+   times) {
+      return $Html.text($String.trimRight($String.repeat(times)($String.toUpper(A2($Basics._op["++"],
+      message,
+      " ")))));
+   });
+   var pageHeader = A2($Html.h1,
+   _L.fromArray([]),
+   _L.fromArray([A2(title,
+   "bingo!",
+   3)]));
+   var update = F2(function (action,
+   model) {
+      return function () {
+         switch (action.ctor)
+         {case "Delete":
+            return function () {
+                 var remainingEntries = A2($List.filter,
+                 function (e) {
+                    return !_U.eq(e.id,
+                    action._0);
+                 },
+                 model.entries);
+                 return _U.replace([["entries"
+                                    ,remainingEntries]],
+                 model);
+              }();
+            case "Mark":
+            return function () {
+                 var updateEntry = function (e) {
+                    return _U.eq(e.id,
+                    action._0) ? _U.replace([["wasSpoken"
+                                             ,$Basics.not(e.wasSpoken)]],
+                    e) : e;
+                 };
+                 return _U.replace([["entries"
+                                    ,A2($List.map,
+                                    updateEntry,
+                                    model.entries)]],
+                 model);
+              }();
+            case "NoOp": return model;
+            case "Sort":
+            return _U.replace([["entries"
+                               ,A2($List.sortBy,
+                               function (_) {
+                                  return _.points;
+                               },
+                               model.entries)]],
+              model);}
+         _U.badCase($moduleName,
+         "between lines 39 and 58");
+      }();
+   });
+   var Mark = function (a) {
+      return {ctor: "Mark",_0: a};
+   };
+   var Delete = function (a) {
+      return {ctor: "Delete"
+             ,_0: a};
+   };
+   var entryItem = F2(function (address,
+   entry) {
+      return A2($Html.li,
+      _L.fromArray([$Html$Attributes.classList(_L.fromArray([{ctor: "_Tuple2"
+                                                             ,_0: "highlight"
+                                                             ,_1: entry.wasSpoken}]))
+                   ,A2($Html$Events.onClick,
+                   address,
+                   Mark(entry.id))]),
+      _L.fromArray([A2($Html.span,
+                   _L.fromArray([$Html$Attributes.$class("phrase")]),
+                   _L.fromArray([$Html.text(entry.phrase)]))
+                   ,A2($Html.span,
+                   _L.fromArray([$Html$Attributes.$class("points")]),
+                   _L.fromArray([$Html.text($Basics.toString(entry.points))]))
+                   ,A2($Html.button,
+                   _L.fromArray([$Html$Attributes.$class("delete")
+                                ,A2($Html$Events.onClick,
+                                address,
+                                Delete(entry.id))]),
+                   _L.fromArray([]))]));
+   });
+   var entryList = F2(function (address,
+   entries) {
+      return function () {
+         var entryItems = A2($List.map,
+         entryItem(address),
+         entries);
+         var items = A2($Basics._op["++"],
+         entryItems,
+         _L.fromArray([totalItem(totalPoints(entries))]));
+         return A2($Html.ul,
+         _L.fromArray([]),
+         items);
+      }();
+   });
+   var Sort = {ctor: "Sort"};
+   var view = F2(function (address,
+   model) {
+      return A2($Html.div,
+      _L.fromArray([$Html$Attributes.id("container")]),
+      _L.fromArray([pageHeader
+                   ,A2(entryList,
+                   address,
+                   model.entries)
+                   ,A2($Html.button,
+                   _L.fromArray([$Html$Attributes.$class("sort")
+                                ,A2($Html$Events.onClick,
+                                address,
+                                Sort)]),
+                   _L.fromArray([$Html.text("Sort")]))
+                   ,pageFooter]));
+   });
+   var NoOp = {ctor: "NoOp"};
+   var newEntry = F3(function (phrase,
+   points,
+   id) {
+      return {_: {}
+             ,id: id
+             ,phrase: phrase
+             ,points: points
+             ,wasSpoken: false};
+   });
+   var intialModel = {_: {}
+                     ,entries: _L.fromArray([A3(newEntry,
+                                            "Doing Agile",
+                                            200,
+                                            2)
+                                            ,A3(newEntry,"FRP baby",400,4)
+                                            ,A3(newEntry,
+                                            "In The Cloud",
+                                            300,
+                                            3)
+                                            ,A3(newEntry,
+                                            "Future-Proof",
+                                            100,
+                                            1)])};
+   var main = $StartApp.start({_: {}
+                              ,model: intialModel
+                              ,update: update
+                              ,view: view});
+   _elm.Bingo.values = {_op: _op
+                       ,newEntry: newEntry
+                       ,intialModel: intialModel
+                       ,NoOp: NoOp
+                       ,Sort: Sort
+                       ,Delete: Delete
+                       ,Mark: Mark
+                       ,update: update
+                       ,title: title
+                       ,pageHeader: pageHeader
+                       ,pageFooter: pageFooter
+                       ,entryItem: entryItem
+                       ,totalPoints: totalPoints
+                       ,totalItem: totalItem
+                       ,entryList: entryList
+                       ,view: view
+                       ,main: main};
+   return _elm.Bingo.values;
+};
