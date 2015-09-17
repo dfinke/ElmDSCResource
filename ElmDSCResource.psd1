@@ -21,7 +21,7 @@ CompanyName = 'Doug Finke'
 Copyright = '(c) 2014 Doug Finke. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+Description = 'PowerShell DSC Provide that compiles Elm language files'
 
 # Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '5.0'
