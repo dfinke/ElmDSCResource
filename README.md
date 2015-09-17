@@ -6,7 +6,7 @@ PowerShell DSC Provider for compiling Elm Language files
 This version of the DSC Resource provider requires the elm packages to be install before running, otherwise it will hang. 
 
 ### How to get it 
-Running PowerShell v5.0? `Install-Module -Name ElmDSCResource` [PowerShellGallery](https://www.powershellgallery.com/packages/ElmDSCResource/)
+Running PowerShell v5.0? It's on the [PowerShellGallery](https://www.powershellgallery.com/packages/ElmDSCResource/). From the prompt PS C:\>`Install-Module -Name ElmDSCResource` 
 
 Or - grab this GitHub repo
 
