@@ -16,4 +16,5 @@ Or - grab this GitHub repo
 * Update and run [TestElmResource.ps1](https://github.com/dfinke/ElmDSCResource/blob/master/TestElmResource.ps1)
 * Launch the html file, `.\bingo\index.html`
 
-![image](https://raw.githubusercontent.com/dfinke/ElmDSCResource/master/images/Bingo.png)
+
+[![image](https://raw.githubusercontent.com/dfinke/ElmDSCResource/master/images/Bingo.png)](http://dougfinke.com/elm/index.html)
