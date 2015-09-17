@@ -1,2 +1,10 @@
 PowerShell DSC Provider for compiling Elm Language files
 -
+
+### Note
+
+This version of the DSC Resource provider requires the elm packages to be install before running, otherwise it will hang. 
+
+### What you need
+* [Install Elm](http://elm-lang.org/)
+* Update and run [TestElmResource.ps1](https://github.com/dfinke/ElmDSCResource/blob/master/TestElmResource.ps1)
